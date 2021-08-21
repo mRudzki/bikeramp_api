@@ -2,7 +2,8 @@ class DistanceCalculatorWorker
   include Sidekiq::Worker
   require "http"
 
-  def perform(trip)
+  def perform(trip_id)
+    trip = Trip.find(trip_id)
     request_address = "http://www.mapquestapi.com/directions/v2/route"
     form = {
       key: ENV.fetch("MAP_QUEST_KEY"),
