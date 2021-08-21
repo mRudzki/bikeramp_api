@@ -17,5 +17,15 @@ RSpec.describe Trip, type: :model do
         expect { trip.save! }.to raise_error("Validation failed: Price must be greater than 0")
       end
     end
+
+    it 'does not allow the same address as start and destination point' do
+      address = Faker::Address.full_address
+      trip = build :trip, start_address: address, destination_address: address
+
+      aggregate_failures do
+        expect(trip.valid?).to eq(false)
+        expect { trip.save! }.to raise_error("Validation failed: Destination address cannot be the same as start address")
+      end
+    end
   end
 end
