@@ -8,5 +8,14 @@ RSpec.describe Trip, type: :model do
 
       expect(trip.save!).to eq(true)
     end
+
+    it 'does not allow negative price value' do
+      trip = build :trip, price: -10.25
+
+      aggregate_failures do
+        expect(trip.valid?).to eq(false)
+        expect { trip.save! }.to raise_error("Validation failed: Price must be greater than 0")
+      end
+    end
   end
 end
