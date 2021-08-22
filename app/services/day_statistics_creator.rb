@@ -4,7 +4,7 @@ class DayStatisticsCreator
   end
 
   def call
-    { day: date_formatted, total_distance: "#{day_distance} km", avg_ride: "#{avg_distance} km", avg_price: "#{avg_price} PLN" }
+    { day: date_formatted, total_distance: "#{day_distance} km", avg_ride: "#{avg_distance} km", avg_price: average_price_formatted }
   end
 
   private
@@ -20,7 +20,7 @@ class DayStatisticsCreator
   end
 
   def day_distance
-    @day_distance ||= day_data.sum(&:distance).to_f
+    @day_distance ||= day_data.sum(&:distance).to_d
   end
 
   def day_data
@@ -28,10 +28,14 @@ class DayStatisticsCreator
   end
 
   def avg_distance
-    (day_distance / day_data.size).to_f.round(3)
+    (day_distance / day_data.size).to_d.round(3)
+  end
+
+  def average_price_formatted
+    ActiveSupport::NumberHelper.number_to_currency(avg_price, unit: "PLN", format: "%n %u")
   end
 
   def avg_price
-    (day_data.sum(&:price) / day_data.size).to_f.round(2)
+    (day_data.sum(&:price) / day_data.size).to_d
   end
 end
