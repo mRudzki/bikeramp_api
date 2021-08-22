@@ -17,7 +17,7 @@ RSpec.describe "Api::Stats", type: :request do
     end
   end
 
-  fdescribe "GET /monthly" do
+  describe "GET /monthly" do
     let(:spec_date) { Date.new(2021, 8, 22) }
     before do
       Timecop.freeze(spec_date)
