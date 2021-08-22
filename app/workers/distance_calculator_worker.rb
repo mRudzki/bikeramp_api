@@ -15,6 +15,8 @@ class DistanceCalculatorWorker
 
     raise Exception.new "Wrong data or API key please review them" if response.status != 200
 
+    raise(StandardError.new, "No route found") if response.parse['route']['distance'].nil?
+
     trip.update(distance: response.parse['route']['distance'])
   end
 end
