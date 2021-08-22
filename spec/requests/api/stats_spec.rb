@@ -32,8 +32,19 @@ RSpec.describe "Api::Stats", type: :request do
     it "returns sum of all trip distances of current week" do
       get api_stats_monthly_path
 
-      expect(JSON.parse(response.body)['total_distance']).to eq('8.109')
-      expect(JSON.parse(response.body)['total_price']).to eq('96.02')
+      aggregate_failures do
+        # First day part
+        expect(JSON.parse(response.body).first["day"]).to eq('August, 20th')
+        expect(JSON.parse(response.body).first["total_distance"]).to eq('8.0')
+        expect(JSON.parse(response.body).first["avg_ride"]).to eq('4.0')
+        expect(JSON.parse(response.body).first["avg_price"]).to eq('48.01')
+
+        # Second day part
+        expect(JSON.parse(response.body).last["day"]).to eq('August, 21st')
+        expect(JSON.parse(response.body).last["total_distance"]).to eq('8.109')
+        expect(JSON.parse(response.body).last["avg_ride"]).to eq('4.0545')
+        expect(JSON.parse(response.body).last["avg_price"]).to eq('48.01')
+      end
     end
   end
 end
