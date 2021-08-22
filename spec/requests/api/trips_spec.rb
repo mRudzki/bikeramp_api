@@ -24,9 +24,9 @@ RSpec.describe "Api::Trips", type: :request do
       it "allows sidekiq to change record" do
         Sidekiq::Testing.inline! do
           post api_trips_path, params: { trip: trip_params }, as: :json
-
-          expect(Trip.last.distance).not_to be_nil
         end
+
+        expect(Trip.last.distance).not_to be_nil
       end
     end
 
