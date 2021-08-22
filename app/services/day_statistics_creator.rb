@@ -20,7 +20,7 @@ class DayStatisticsCreator
   end
 
   def day_distance
-    @day_distance ||= day_data.sum(&:distance)
+    @day_distance ||= day_data.sum(&:distance).to_f
   end
 
   def day_data
@@ -28,10 +28,10 @@ class DayStatisticsCreator
   end
 
   def avg_distance
-    (day_distance / day_data.size).round(3)
+    (day_distance / day_data.size).to_f.round(3)
   end
 
   def avg_price
-    (day_data.sum(&:price) / day_data.size).round(2)
+    (day_data.sum(&:price) / day_data.size).to_f.round(2)
   end
 end
