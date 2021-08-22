@@ -31,15 +31,19 @@ RSpec.describe Trip, type: :model do
     it 'does not allow empty start address' do
       trip = build :trip, start_address: nil
 
-      expect(trip.valid?).to eq(false)
-      expect { trip.save! }.to raise_error("Validation failed: Start address can't be blank")
+      aggregate_failures do
+        expect(trip.valid?).to eq(false)
+        expect { trip.save! }.to raise_error("Validation failed: Start address can't be blank")
+      end
     end
 
     it 'does not allow empty start address' do
       trip = build :trip, destination_address: nil
 
-      expect(trip.valid?).to eq(false)
-      expect { trip.save! }.to raise_error("Validation failed: Destination address can't be blank")
+      aggregate_failures do
+        expect(trip.valid?).to eq(false)
+        expect { trip.save! }.to raise_error("Validation failed: Destination address can't be blank")
+      end
     end
   end
 end
