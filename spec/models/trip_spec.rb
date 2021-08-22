@@ -27,5 +27,17 @@ RSpec.describe Trip, type: :model do
         expect { trip.save! }.to raise_error("Validation failed: Destination address cannot be the same as start address")
       end
     end
+
+    it 'does not allow empty start address' do
+      trip = build :trip, start_address: nil
+
+      expect(trip.valid?).to eq(false)
+    end
+
+    it 'does not allow empty start address' do
+      trip = build :trip, destination_address: nil
+
+      expect(trip.valid?).to eq(false)
+    end
   end
 end
