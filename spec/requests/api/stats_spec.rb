@@ -12,13 +12,16 @@ RSpec.describe "Api::Stats", type: :request do
     it "returns sum of all trip distances of current week" do
       get api_stats_weekly_path
 
-      expect(JSON.parse(response.body)['total_distance']).to eq('8.109')
-      expect(JSON.parse(response.body)['total_price']).to eq('96.02')
+      aggregate_failures do
+        expect(JSON.parse(response.body)['total_distance']).to eq('8.109')
+        expect(JSON.parse(response.body)['total_price']).to eq('96.02')
+      end
     end
   end
 
   describe "GET /monthly" do
     let(:spec_date) { Date.new(2021, 8, 22) }
+
     before do
       Timecop.freeze(spec_date)
       # First trip should not be counted in stats because it is created before start of the week
@@ -38,8 +41,10 @@ RSpec.describe "Api::Stats", type: :request do
     it "returns list of all days statistics of current month" do
       get api_stats_monthly_path
 
-      expect(response).to have_http_status(:ok)
-      expect(JSON.parse(response.body).length).to eq(3)
+      aggregate_failures do
+        expect(response).to have_http_status(:ok)
+        expect(JSON.parse(response.body).length).to eq(3)
+      end
     end
 
     it "contains correct data for each day" do
