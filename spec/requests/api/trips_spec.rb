@@ -12,13 +12,18 @@ RSpec.describe "Api::Trips", type: :request do
           date: Date.today
         }
       end
+
       it "creates record" do
-        expect { post api_trips_path, params: { trip: trip_params }, as: :json }.to change(Trip, :count).by(1)
-        expect(response).to have_http_status(:ok)
+        aggregate_failures do
+          expect { post api_trips_path, params: { trip: trip_params }, as: :json }.to change(Trip, :count).by(1)
+          expect(response).to have_http_status(:ok)
+        end
       end
 
       it "queues sidekiq worker" do
-        expect { post api_trips_path, params: { trip: trip_params }, as: :json }.to change { DistanceCalculatorWorker.jobs.size }.by(1)
+        expect { post api_trips_path, params: { trip: trip_params }, as: :json }.to change {
+          DistanceCalculatorWorker.jobs.size
+        }.by(1)
       end
 
       it "allows sidekiq to change record" do
