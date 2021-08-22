@@ -1,6 +1,7 @@
 class Trip < ApplicationRecord
   validates :price, numericality: { greater_than: 0 }
   validate :addresses_validation
+  validates :start_address, :destination_address, presence: true
 
   private
 
