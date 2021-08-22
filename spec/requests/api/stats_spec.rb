@@ -18,19 +18,24 @@ RSpec.describe "Api::Stats", type: :request do
   end
 
   describe "GET /monthly" do
+    let(:spec_date) { Date.new(2021, 8, 22) }
     before do
       # First price should not be counted in stats because it is created before start of the week
       create :trip, date: Date.today.beginning_of_month - 1.day
       # First day group
-      create :trip, distance: 2.123, price: 12.34, date: Date.yesterday
-      create :trip, distance: 5.986, price: 83.68, date: Date.yesterday
+      create :trip, distance: 3, price: 12.34, date: spec_date - 2.days
+      create :trip, distance: 5, price: 83.68, date: spec_date - 2.days
       # Another day group
-      create :trip, distance: 3, price: 12.34, date: Date.today - 2.days
-      create :trip, distance: 5, price: 83.68, date: Date.today - 2.days
+      create :trip, distance: 2.123, price: 12.34, date: spec_date.yesterday
+      create :trip, distance: 5.986, price: 83.68, date: spec_date.yesterday
     end
 
+    after { Timecop.return }
+
     it "returns sum of all trip distances of current week" do
-      get api_stats_monthly_path
+      Timecop.freeze(spec_date) do
+        get api_stats_monthly_path
+      end
 
       aggregate_failures do
         # First day part
