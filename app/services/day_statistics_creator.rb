@@ -4,7 +4,7 @@ class DayStatisticsCreator
   end
 
   def call
-    { day: date_formatted, total_distance: "#{day_distance} km", avg_ride: avg_distance, avg_price: avg_price }
+    { day: date_formatted, total_distance: "#{day_distance} km", avg_ride: "#{avg_distance} km", avg_price: "#{avg_price} PLN" }
   end
 
   private
