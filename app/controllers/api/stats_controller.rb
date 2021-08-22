@@ -7,17 +7,11 @@ class Api::StatsController < ApplicationController
 
   def monthly
     trips = Trip.where('date > ?', beginning_of_month).order(:date).group_by(&:date)
-    groups = trips.map do |group|
-      day = group.first
-      day_formatted = day.strftime("%B, #{day.day.ordinalize}")
-      group_records = group.second
-      total_distance = group_records.sum(&:distance)
-      avg_distance = total_distance / group_records.size
-      avg_price = group_records.sum(&:price) / group_records.size
-      { day: day_formatted, total_distance: total_distance, avg_ride: avg_distance, avg_price: avg_price }
+    days = trips.map do |day|
+      DayStatisticsCreator.new(day).call
     end
 
-    render json: groups
+    render json: days
   end
 
   private
