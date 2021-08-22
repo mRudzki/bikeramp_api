@@ -59,7 +59,6 @@ RSpec.describe "Api::Stats", type: :request do
         expect(JSON.parse(response.body).second["avg_price"]).to eq('48.01 PLN')
 
         # Last day part
-        binding.pry
         expect(JSON.parse(response.body).last["day"]).to eq('August, 22nd')
         expect(JSON.parse(response.body).last["total_distance"]).to eq('0.0 km')
         expect(JSON.parse(response.body).last["avg_ride"]).to eq('0.0 km')
