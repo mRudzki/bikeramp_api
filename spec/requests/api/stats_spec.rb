@@ -30,7 +30,7 @@ RSpec.describe "Api::Stats", type: :request do
       create :trip, distance: 2.123, price: 12.34, date: spec_date.yesterday
       create :trip, distance: 5.986, price: 83.68, date: spec_date.yesterday
       # Add trip with not yet calculated distance data
-      create :trip, distance: nil, price: 12.34, date: spec_date
+      create :trip, distance: 0.0, price: 12.34, date: spec_date
     end
 
     after { Timecop.return }
