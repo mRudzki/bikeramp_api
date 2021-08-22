@@ -7,7 +7,7 @@ class Api::StatsController < ApplicationController
 
   def monthly
     trips = Trip.where('date > ?', beginning_of_month).order(:date).group_by(&:date)
-    groups = trips.map do|group|
+    groups = trips.map do |group|
       day = group.first
       day_formatted = day.strftime("%B, #{day.day.ordinalize}")
       group_records = group.second
