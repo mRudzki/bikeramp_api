@@ -25,14 +25,6 @@ RSpec.describe "Api::Trips", type: :request do
           DistanceCalculatorWorker.jobs.size
         }.by(1)
       end
-
-      it "allows sidekiq to change record" do
-        Sidekiq::Testing.inline! do
-          post api_trips_path, params: { trip: trip_params }, as: :json
-        end
-
-        expect(Trip.last.distance).not_to be_nil
-      end
     end
 
     it "returns errors on invalid record" do
